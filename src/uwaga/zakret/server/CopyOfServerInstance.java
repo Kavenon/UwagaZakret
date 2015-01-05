@@ -27,7 +27,7 @@ import uwaga.zakret.model.Player;
 import uwaga.zakret.model.Position;
 import uwaga.zakret.model.Settings;
 
-public class ServerInstance {
+public class CopyOfServerInstance {
 
 	private static Board board = new Board(10, 10, 640 - 215, 480 - 20);	
 
@@ -43,7 +43,7 @@ public class ServerInstance {
 
 	private String collisionDetected;
 
-	public ServerInstance(int port) {
+	public CopyOfServerInstance(int port) {
 		//logger.info("Server running");
 		System.out.println("---The server is running.---");
 	}

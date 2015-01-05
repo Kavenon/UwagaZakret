@@ -14,8 +14,7 @@ public class ImageView {
 			image = ImageIO.read(getClass().getResourceAsStream(s));
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	
+		}	
 	}
 	
 	public void draw (Graphics2D g, int x, int y, int width, int height){

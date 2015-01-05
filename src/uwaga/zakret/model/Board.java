@@ -12,39 +12,48 @@ public class Board {
 	
 	private String admin; 
 	
-	public String getWinner() {
-		return winner;
-	}
-
-	public void setWinner(String winner) {
-		this.winner = winner;
-	}
-
 	private String winner;
-
-	public String getAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(String admin) {
-		this.admin = admin;
-	}
-
+	
 	private int remainingPlayers;
+	
+	private int goal;
 
-	public int getRemainingPlayers() {
-		return remainingPlayers;
+	private int x, y, width, height;
+
+	private Player[][] map;
+	
+	private boolean playing;
+	
+	public Board(int x, int y, int width, int height) {
+		
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		
+		players = new ArrayList<PlayerController>();		
+		this.playing = false;
+
+		// set and clear map
+		createMap();
+	}
+	public Board() {
+		players = new ArrayList<PlayerController>();
+		this.playing = false;
 	}
 	
 	public Color generateColor(){
 		boolean taken = true;
 		Color color = null;
 		Random gen = new Random();
+		
+		int delta = 15000; 
+		
 		while(taken){
 			taken = false;
 			color = Color.getHSBColor((float) gen.nextFloat(), 1, 1);
 			for(PlayerController pcont : players){				
-				if(pcont.getPlayer().getMarkerController().getMarker().getColor().getRGB() == color.getRGB() ){
+				if(Math.abs(pcont.getPlayer().getMarkerController().getMarker().getColor().getRGB() - color.getRGB()) < delta ){
 					taken = true;	
 					break;
 				}
@@ -54,7 +63,7 @@ public class Board {
 		return color;
 	}
 	public int[] generatePosition(){
-		boolean loop = true;
+	
 		Random generator = new Random();
 		
 		int minX = (int)( x +  10*x);
@@ -63,17 +72,17 @@ public class Board {
 		int minY = (int)( y + 10*y);
 		int maxY = (int)(height - 0.3 * height);
 		
-		System.out.print("("+minX+","+maxX+")");
-		System.out.println("("+minY+","+maxY+")");
 		int maxDir = 360;
 		int minDir = 0;
 		
-		int delta = 10;
+		int delta = 30;
 		
-		boolean taken = true;
 		int nx = 0;
 		int ny = 0;
-		int ndirection =0;
+		int ndirection = 0;
+		
+		boolean taken = true;
+						
 		while(taken){
 			nx = generator.nextInt((maxX - minX) + 1) + minX;
 			ny = generator.nextInt((maxY - minY) + 1) + minY;
@@ -86,50 +95,53 @@ public class Board {
 					taken = true;
 					break;
 				}
-			}
-			
+			}			
 		}
 		
 		int[] ret = new int[3];
+		
 		ret[0] = nx;
 		ret[1] = ny;
 		ret[2] = ndirection;
-		System.out.println(ret);
-		return ret;
-		
+	
+		return ret;		
+	}
+	
+	public String getWinner() {
+		return winner;
 	}
 
-	public void setRemainingPlayers(int i) {
-		//remainingPlayers = 10;
+	public void setWinner(String winner) {
+		this.winner = winner;
+	}
+	
+	public String getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(String admin) {
+		this.admin = admin;
+	}
+	
+	public int getRemainingPlayers() {
+		return remainingPlayers;
+	}		
+
+	public void setRemainingPlayers(int i) {		
 		remainingPlayers = i;
 	}
 
 	public void incRemainingPlayers() {
-		remainingPlayers++;
-		//remainingPlayers = 10;
+		remainingPlayers++;		
 	}
 
 	public void decRemainingPlayers() {
 		remainingPlayers--;
 	}
 
-	private int goal;
-
-	private double x, y, width, height;
-
-	private Player[][] map;
-
 	public Player[][] getMap() {
 		return map;
 	}
-
-	public void setMap(Player[][] map) {
-		this.map = map;
-	}
-
-	private Color color;
-
-	private boolean playing;
 
 	public boolean isPlaying() {
 		return playing;
@@ -139,66 +151,49 @@ public class Board {
 		this.playing = playing;
 	}
 
-	public double getX() {
+	public int getX() {
 		return x;
 	}
 
-	public void setX(double x) {
+	public void setX(int x) {
 		this.x = x;
 	}
 
-	public double getY() {
+	public int getY() {
 		return y;
 	}
 
-	public void setY(double y) {
+	public void setY(int y) {
 		this.y = y;
 	}
 
-	public double getWidth() {
+	public int getWidth() {
 		return width;
 	}
 
-	public void setWidth(double width) {
+	public void setWidth(int width) {
 		this.width = width;
 	}
 
-	public double getHeight() {
+	public int getHeight() {
 		return height;
 	}
 
-	public void setHeight(double height) {
+	public void setHeight(int height) {
 		this.height = height;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
 	}
 
 	public void setPlayers(ArrayList<PlayerController> players) {
 		this.players = players;
 	}
 
-	public Board(double x, double y, double width, double height) {
-		players = new ArrayList<PlayerController>();
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.playing = false;
-
-		// set and clear map
-		createMap();
-	}
-
 	public void markMap(int x, int y, Player p) {
 		if (map != null)
-			map[x][y] = p;
-		
+			map[x][y] = p;		
+	}
+	
+	public void setMap(Player[][] map){
+		this.map = map;
 	}
 
 	public void createMap() {
@@ -218,11 +213,7 @@ public class Board {
 		}
 	}
 
-	public Board() {
-		players = new ArrayList<PlayerController>();
-		this.playing = false;
-	}
-
+	
 	public ArrayList<PlayerController> getPlayers() {
 		return players;
 	}

@@ -9,6 +9,7 @@ import uwaga.zakret.controller.WelcomeController;
 import uwaga.zakret.model.Connection;
 
 public class GameEngine {
+	
 	private ArrayList<Controller> controllers;
 	private int currentState;
 	
@@ -25,7 +26,8 @@ public class GameEngine {
 		controllers.add(new WelcomeController(this));
 		controllers.add(new ConnectFormController(this));
 		
-		conn = new Connection();
+		conn = Connection.getConnection();
+		
 		//conn.create("localhost");
 		
 		
@@ -36,11 +38,16 @@ public class GameEngine {
 	public Connection getConn(){
 		return conn;
 	}
-	public void setState(int state) {
+	public Controller setState(int state) {
 
 		currentState = state;
 		controllers.get(currentState).init();
+		return controllers.get(currentState);
 
+	}
+	
+	public void setError(String msg){
+		controllers.get(currentState).setError(msg);
 	}
 
 	public void update() {

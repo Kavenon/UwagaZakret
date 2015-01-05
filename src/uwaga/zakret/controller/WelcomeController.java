@@ -4,23 +4,34 @@ import java.awt.AlphaComposite;
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uwaga.zakret.GameEngine;
 import uwaga.zakret.GamePanel;
-import uwaga.zakret.view.BackgroundView;
+import uwaga.zakret.view.ImageView;
 
 public class WelcomeController extends Controller {
-	private BackgroundView backgroundView;
+	private ImageView backgroundView;
 	
 	private float alpha = 0f;
 	
 	private boolean fadeOut;
 	
+	private static final Logger logger = LoggerFactory
+			.getLogger(WelcomeController.class);
+	
 	public WelcomeController(GameEngine engine) {
 		this.engine = engine;
 	}
-	
+	public void setError(String msg){
+		error = msg;
+	}
 	public  void init(){
-		backgroundView = new BackgroundView("/welcome-background.jpg");
+		
+		logger.debug("Welcome screen");
+		
+		backgroundView = new ImageView("/welcome-background.jpg");
 		
 
 	};
@@ -44,7 +55,7 @@ public class WelcomeController extends Controller {
 		g.setComposite(AlphaComposite.getInstance(
 		          AlphaComposite.SRC_OVER, alpha));
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		backgroundView.draw(g);
+		backgroundView.draw(g, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 	};
 	public  void keyPressed(int k){
 		if(KeyEvent.VK_SPACE == k){

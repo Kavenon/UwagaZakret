@@ -20,41 +20,41 @@ public class StatsView extends View {
 
 	@Override
 	public void draw(Graphics2D g) {
-		
+
 		g.clearRect(450, 0, 180, 480);
-		
+
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 		g.setFont(new Font("Arial", Font.BOLD, 28));
 
+		/** DRAW GOAL **/
 		g.setColor(Settings.gold);
-		g.drawString(""+Settings.goal, 505, 145);
-		
+		g.drawString("" + Settings.goal, 505, 145);
 		g.setFont(new Font("Arial", Font.BOLD, 15));
-		g.setColor(new Color(130,130,130));
+		g.setColor(new Color(130, 130, 130));
 		g.drawString("goal", 550, 140);
-		
+
 		int i = 0;
-		
-		// g.setColor(Color.red);
-		
-		
-	
+
 		for (PlayerController pcont : players) {
-			g.setFont(new Font("Arial", Font.PLAIN, 14));
 			Player p = pcont.getPlayer();
+
+			/** DRAW USERNAME **/
+			g.setFont(new Font("Arial", Font.PLAIN, 14));
 			g.setColor(p.getMarkerController().getMarker().getColor());
 			g.drawString(p.getUsername(), 470, 180 + i * 30);
-			
+
+			/** DRAW POINTS **/
 			g.setFont(new Font("Arial", Font.BOLD, 14));
-			g.setColor(Settings.gold);			
+			g.setColor(Settings.gold);
 			g.drawString("" + p.getPoints(), 590, 180 + i * 30);
-			
-			g.setColor(new Color(51,51,51));
+
+			/** DRAW SEPARATOR **/
+			g.setColor(new Color(51, 51, 51));
 			g.drawLine(460, 190 + i * 30, 610, 190 + i * 30);
+
 			i++;
 		}
-		
 
 	}
 

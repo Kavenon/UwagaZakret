@@ -11,11 +11,10 @@ public class Player {
 	private int points;
 
 	private Control control;
-	
+
 	private boolean ready;
-	
+
 	private boolean alive;
-	
 
 	public boolean isAlive() {
 		return alive;
@@ -33,11 +32,13 @@ public class Player {
 		this.ready = ready;
 	}
 
-	public Player(String username){
+	public Player(String username) {
 		this.username = username;
 		this.alive = true;
 	}
-	public Player(MarkerController marker, String username, int points, Control control, boolean ready) {
+
+	public Player(MarkerController marker, String username, int points,
+			Control control, boolean ready) {
 
 		this.marker = marker;
 		this.username = username;
