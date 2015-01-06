@@ -60,12 +60,12 @@ public class PlayerController extends Controller {
 		if (k == player.getControl().getLeft()) {
 			if (!pressed) {
 				engine.getConn().send(
-						"POSITION[" + -1 * Settings.turnRadius + "]");
+						"POSITION#" + -1 * Settings.turnRadius + "#");
 				pressed = true;
 			}
 		} else if (k == player.getControl().getRight()) {
 			if (!pressed) {
-				engine.getConn().send("POSITION[" + Settings.turnRadius + "]");
+				engine.getConn().send("POSITION#" + Settings.turnRadius + "#");
 				pressed = true;
 			}
 		} else if (k == KeyEvent.VK_SPACE) {
@@ -81,7 +81,7 @@ public class PlayerController extends Controller {
 		if (k == player.getControl().getLeft()
 				|| k == player.getControl().getRight()) {
 
-			engine.getConn().send("POSITION[0.0]");
+			engine.getConn().send("POSITION#0.0#");
 			pressed = false;
 
 		}

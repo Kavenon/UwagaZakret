@@ -342,10 +342,10 @@ public class PlayController extends Controller {
 					String opt = "";
 					if (lastTimeToggle != 0) {
 
-						if (lastWriting == null || lastWriting.equals("DOWN")) {
-							opt = "UP";
-						} else {
+						if (lastWriting == null || lastWriting.equals("UP")) {
 							opt = "DOWN";
+						} else {
+							opt = "UP";
 						}
 
 						lastWriting = opt;
@@ -355,7 +355,7 @@ public class PlayController extends Controller {
 					
 					int min, max = 0;
 
-					if (opt.equals("DOWN")) {					
+					if (opt.equals("UP")) {					
 						min = 300;
 						max = 1000;
 					} else {
