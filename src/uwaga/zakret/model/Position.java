@@ -36,5 +36,12 @@ public class Position {
 
 		return (int) x == (int) that.x && (int) y == (int) that.y;
 	}
+	@Override
+	public int hashCode() {
+	    int hash = 7;
+	    hash = 71 * hash + (int) x;
+	    hash = 71 * hash + (int) y;
+	    return hash;
+	}
 
 }

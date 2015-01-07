@@ -19,6 +19,8 @@ public class PlayerView extends View {
 	public void draw(Graphics2D g) {
 		Marker marker = player.getMarkerController().getMarker();
 		
+		if(!player.isAlive()) return;
+		
 		if(!marker.isWriting()){
 			if(marker.getPreviousPosition() != null){
 				if (!marker.getCurrentPosition().equals(marker.getPreviousPosition())) {

@@ -294,7 +294,7 @@ public class ServerInstance {
 			return check;
 		}
 
-		public synchronized void run() {
+		public void run() {
 
 			try {
 				in = new DataInputStream(socket.getInputStream());
@@ -357,33 +357,30 @@ public class ServerInstance {
 						board.setPlayers(newPlayerController);
 						
 						sendToClient(out, initBoard);
-						//out.writeUTF(initBoard);
-
+					
 						String initPlayer = "INITPLAYER#" + (int) x + "#"
 								+ (int) y + "#" + (int) direction + "#"
 								+ color.getRGB() + "#";
 
 						sendToClient(out, initPlayer);
-					//	out.writeUTF(initPlayer);
-
-					//	out.flush();
+					
 						// logger.info("Player.Registered : " + name);
 
 						break;
 					}
 
 				}
-				// player registered
+			
 				sendToClient(out, "NAMEACCEPTED");
-				//out.writeUTF();
-				//out.flush();
+			
 				writers.add(out);
 
 				// communicate with client
 				while (true) {
-					// System.err.println("TRYING READ");
+				
 					String input = in.readUTF();
 					// logger.debug("CLIENT:" + input);
+					
 					if (input == null) {
 						return;
 					}
@@ -475,7 +472,6 @@ public class ServerInstance {
 						
 						sendToClient(out, "MYRESET#" + x + "#" + y + "#" + direction);
 						
-
 					} else if (input.startsWith("MARKER#")) {
 						String[] spl = input.split("#");
 

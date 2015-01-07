@@ -108,8 +108,6 @@ public class PlayController extends Controller {
 					}
 				}
 
-			//	return;
-
 			} else if (line.startsWith("COL")) {
 
 				String[] splfirst = line.split("#");
@@ -135,15 +133,11 @@ public class PlayController extends Controller {
 
 				}
 
-			//	return;
-
 			} else if (line.startsWith("WINNER")) {
 
 				String[] splfirst = line.split("#");
 
 				board.setWinner(splfirst[1]);
-
-			//	return;
 
 			} else if (line.startsWith("MYRESET#")) {
 
@@ -164,9 +158,7 @@ public class PlayController extends Controller {
 
 				engine.getConn().send("REQUEST_OTHERS_RESET");
 
-			}
-
-			else if (line.startsWith("RESPONSE_OTHERS_RESET#")) {
+			} else if (line.startsWith("RESPONSE_OTHERS_RESET#")) {
 
 				String[] spl = line.split("#");
 
@@ -237,7 +229,7 @@ public class PlayController extends Controller {
 
 				playerController.setPlayer(player);
 
-				if (board != null)
+				//if (board != null)
 					board.setPlayers(playerController);
 
 				engine.getConn().send("READY[" + player.getUsername() + "]");
