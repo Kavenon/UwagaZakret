@@ -9,104 +9,119 @@ import uwaga.zakret.controller.PlayerController;
 public class Board {
 
 	private ArrayList<PlayerController> players;
-	
-	private String admin; 
-	
+
+	private String admin;
+
 	private String winner;
-	
+
 	private int remainingPlayers;
-	
+
 	private int goal;
 
 	private int x, y, width, height;
 
 	private Player[][] map;
-	
+
 	private boolean playing;
-	
+
+	private boolean clear;
+
+	public boolean isClear() {
+		return clear;
+	}
+
+	public void setClear(boolean b) {
+		clear = b;
+	}
+
 	public Board(int x, int y, int width, int height) {
-		
+
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		
-		players = new ArrayList<PlayerController>();		
+
+		players = new ArrayList<PlayerController>();
 		this.playing = false;
 
 		// set and clear map
 		createMap();
 	}
+
 	public Board() {
 		players = new ArrayList<PlayerController>();
 		this.playing = false;
 	}
-	
-	public Color generateColor(){
+
+	public Color generateColor() {
 		boolean taken = true;
 		Color color = null;
 		Random gen = new Random();
-		
-		int delta = 15000; 
-		
-		while(taken){
+
+		int delta = 15000;
+
+		while (taken) {
 			taken = false;
 			color = Color.getHSBColor((float) gen.nextFloat(), 1, 1);
-			for(PlayerController pcont : players){				
-				if(Math.abs(pcont.getPlayer().getMarkerController().getMarker().getColor().getRGB() - color.getRGB()) < delta ){
-					taken = true;	
+			for (PlayerController pcont : players) {
+				if (Math.abs(pcont.getPlayer().getMarkerController()
+						.getMarker().getColor().getRGB()
+						- color.getRGB()) < delta) {
+					taken = true;
 					break;
 				}
 			}
 		}
-	
+
 		return color;
 	}
-	public int[] generatePosition(){
-	
+
+	public int[] generatePosition() {
+
 		Random generator = new Random();
-		
-		int minX = (int)( x +  10*x);
-		int maxX = (int)(width - 0.3 * width);
-		
-		int minY = (int)( y + 10*y);
-		int maxY = (int)(height - 0.3 * height);
-		
+
+		int minX = (int) (x + 10 * x);
+		int maxX = (int) (width - 0.3 * width);
+
+		int minY = (int) (y + 10 * y);
+		int maxY = (int) (height - 0.3 * height);
+
 		int maxDir = 360;
 		int minDir = 0;
-		
+
 		int delta = 30;
-		
+
 		int nx = 0;
 		int ny = 0;
 		int ndirection = 0;
-		
+
 		boolean taken = true;
-						
-		while(taken){
+
+		while (taken) {
 			nx = generator.nextInt((maxX - minX) + 1) + minX;
 			ny = generator.nextInt((maxY - minY) + 1) + minY;
 			ndirection = generator.nextInt((maxDir - minDir) + 1) + minDir;
 			taken = false;
-			for(PlayerController pcont : players){
+			for (PlayerController pcont : players) {
 				Marker m = pcont.getPlayer().getMarkerController().getMarker();
 				Position p = m.getCurrentPosition();
-				if(Math.abs(p.getX() - nx) < delta || Math.abs(p.getY() - ny) < delta){
+				if (Math.abs(p.getX() - nx) < delta
+						|| Math.abs(p.getY() - ny) < delta) {
 					taken = true;
 					break;
 				}
-			}			
+			}
 		}
-		
+
 		int[] ret = new int[3];
-		
+
 		ret[0] = nx;
 		ret[1] = ny;
 		ret[2] = ndirection;
-	
-		return ret;		
+
+		return ret;
 	}
-	
+
 	public String getWinner() {
 		return winner;
 	}
@@ -114,7 +129,7 @@ public class Board {
 	public void setWinner(String winner) {
 		this.winner = winner;
 	}
-	
+
 	public String getAdmin() {
 		return admin;
 	}
@@ -122,17 +137,17 @@ public class Board {
 	public void setAdmin(String admin) {
 		this.admin = admin;
 	}
-	
+
 	public int getRemainingPlayers() {
 		return remainingPlayers;
-	}		
+	}
 
-	public void setRemainingPlayers(int i) {		
+	public void setRemainingPlayers(int i) {
 		remainingPlayers = i;
 	}
 
 	public void incRemainingPlayers() {
-		remainingPlayers++;		
+		remainingPlayers++;
 	}
 
 	public void decRemainingPlayers() {
@@ -189,16 +204,16 @@ public class Board {
 
 	public void markMap(int x, int y, Player p) {
 		if (map != null)
-			map[x][y] = p;		
+			map[x][y] = p;
 	}
-	
-	public void setMap(Player[][] map){
+
+	public void setMap(Player[][] map) {
 		this.map = map;
 	}
 
 	public void createMap() {
-		int mapX = (int) (x + width)+1;
-		int mapY = (int) (y + height) +1;
+		int mapX = (int) (x + width) + 1;
+		int mapY = (int) (y + height) + 1;
 		map = new Player[mapX][mapY];
 		for (int i = 0; i < mapX; i++) {
 			for (int j = 0; j < mapY; j++) {
@@ -213,7 +228,6 @@ public class Board {
 		}
 	}
 
-	
 	public ArrayList<PlayerController> getPlayers() {
 		return players;
 	}

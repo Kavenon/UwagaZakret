@@ -16,6 +16,8 @@ public class Marker {
 
 	private double direction;
 
+	private long lastTimeToggle;
+
 	public Position getPreviousPosition() {
 		return previousPosition;
 	}
@@ -65,6 +67,14 @@ public class Marker {
 
 	public void setDirection(double direction) {
 		this.direction = direction;
+	}
+
+	public long getLastTimeToggle() {
+		return lastTimeToggle;
+	}
+
+	public void setLastTimeToggle(long lastTimeToggle) {
+		this.lastTimeToggle = lastTimeToggle;
 	}
 
 }

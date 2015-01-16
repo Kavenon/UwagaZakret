@@ -18,36 +18,38 @@ public class PlayerView extends View {
 	@Override
 	public void draw(Graphics2D g) {
 		Marker marker = player.getMarkerController().getMarker();
-		
-		if(!player.isAlive()) return;
-		
-		if(!marker.isWriting()){
-			if(marker.getPreviousPosition() != null){
-				if (!marker.getCurrentPosition().equals(marker.getPreviousPosition())) {
-			
+
+		if (!player.isAlive())
+			return;
+
+		if (!marker.isWriting()) {
+			if (marker.getPreviousPosition() != null) {
+				if (!marker.getCurrentPosition().equals(
+						marker.getPreviousPosition())) {
+
 					g.setColor(Color.black);
 					int clearWidth = marker.getRadius();
 					int clearHeight = marker.getRadius();
 					int clearX = (int) marker.getPreviousPosition().getX();
 					int clearY = (int) marker.getPreviousPosition().getY();
-		
+
 					g.clearRect(clearX, clearY, clearWidth, clearHeight);
-					
-				}	
+
+				}
 			}
 		}
-		 
+
 		g.setColor(marker.getColor());
-	
+
 		Rectangle2D.Double hole = new Rectangle2D.Double();
-				
+
 		hole.width = marker.getRadius();
 		hole.height = marker.getRadius();
 		hole.x = marker.getCurrentPosition().getX();
 		hole.y = marker.getCurrentPosition().getY();
-		
+
 		g.fill(hole);
-		
+
 	}
 
 }

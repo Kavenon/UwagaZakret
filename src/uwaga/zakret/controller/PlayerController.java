@@ -11,13 +11,13 @@ import uwaga.zakret.view.PlayerView;
 public class PlayerController extends Controller {
 
 	private Player player;
-	
+
 	private PlayerView playerView;
 
 	private boolean pressed;
 
 	public PlayerController(GameEngine engine) {
-		this.engine = engine;	
+		this.engine = engine;
 	}
 
 	public void setError(String msg) {
@@ -25,7 +25,7 @@ public class PlayerController extends Controller {
 	}
 
 	public PlayerController() {
-		
+
 	}
 
 	public void setPlayer(Player player) {
@@ -43,7 +43,7 @@ public class PlayerController extends Controller {
 
 	public void update() {
 		MarkerController markCont = player.getMarkerController();
-		
+
 		if (markCont.isTurning()) {
 			markCont.turn();
 		}
@@ -51,7 +51,7 @@ public class PlayerController extends Controller {
 		markCont.move();
 	}
 
-	public void draw(Graphics2D g) {	
+	public void draw(Graphics2D g) {
 		playerView.draw(g);
 	}
 
@@ -70,6 +70,8 @@ public class PlayerController extends Controller {
 			}
 		} else if (k == KeyEvent.VK_SPACE) {
 			engine.getConn().send("START");
+		} else if (k == KeyEvent.VK_ESCAPE) {
+			engine.getConn().close();
 		}
 	}
 

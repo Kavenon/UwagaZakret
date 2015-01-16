@@ -12,8 +12,6 @@ public class Connection {
 	private DataOutputStream out;
 	private Socket socket;
 
-	private static Connection instance;
-
 	public DataInputStream getReader() {
 		return in;
 	}
@@ -22,20 +20,24 @@ public class Connection {
 		return out;
 	}
 
-	private Connection() {
+	public Connection() {
 	}
 
-	public static Connection getConnection() {
-		if (instance == null) {
-			instance = new Connection();
-			return instance;
-		}
-		return instance;
-	}
-
-	public boolean create(String address) {
-		try {		
+	public boolean createSocket(String address) {
+		try {
 			socket = new Socket(address, Settings.port);
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
+	public void setSocket(Socket _socket) {
+		socket = _socket;
+	}
+
+	public boolean createDataStreams() {
+		try {
 			in = new DataInputStream(socket.getInputStream());
 			out = new DataOutputStream(socket.getOutputStream());
 			return true;
@@ -43,22 +45,33 @@ public class Connection {
 			return false;
 		}
 	}
-	
-	public void send(String string){
+
+	public boolean create(String address) {
+		return createSocket(address) && createDataStreams();
+	}
+
+	public void send(String string) {
 		try {
 			out.writeUTF(string);
 			out.flush();
-		}
-		catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
-		}	
+		}
 	}
-	
-	public String read() throws EOFException, IOException{
-		
-		String line = null;	
+
+	public String read() throws EOFException, IOException {
+
+		String line = null;
 		line = in.readUTF();
-		
+
 		return line;
+	}
+
+	public void close() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

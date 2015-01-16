@@ -49,17 +49,17 @@ public class MarkerController extends Controller {
 	}
 
 	public boolean move() {
-	
+
 		marker.setPreviousPosition(marker.getCurrentPosition());
-		
+
 		double x = marker.getCurrentPosition().getX() + 1.2
 				* Math.cos(marker.getDirection());
-		
+
 		double y = marker.getCurrentPosition().getY() + 1.2
 				* Math.sin(marker.getDirection());
 
 		Position newPosition = new Position(x, y);
-	
+
 		marker.setCurrentPosition(newPosition);
 
 		return true;

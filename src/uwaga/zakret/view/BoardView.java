@@ -18,36 +18,45 @@ public class BoardView extends View {
 		this.board = board;
 	}
 
-	public void clearBoard(Graphics2D g){
-		g.clearRect( board.getX()-Settings.boardStroke-1, board.getY()-Settings.boardStroke-1,
-				 board.getHeight()+Settings.boardStroke+1, board.getHeight()+Settings.boardStroke+1);
+	public void clearBoard(Graphics2D g) {
+		g.clearRect(board.getX() - Settings.boardStroke - 1, board.getY()
+				- Settings.boardStroke - 1, board.getHeight()
+				+ Settings.boardStroke + 1, board.getHeight()
+				+ Settings.boardStroke + 1);
 	}
+
 	@Override
 	public void draw(Graphics2D g) {
 
 		Stroke oldStroke = g.getStroke();
-		
+
 		/* CLEAR BOARD */
 		if (board.getRemainingPlayers() <= 1)
 			clearBoard(g);
-				
+
+		if (!board.isClear()) {
+			clearBoard(g);
+			board.setClear(true);
+		}
+
 		/* DRAW WINNER */
-		if(board.getWinner() != null){
+		if (board.getWinner() != null) {
 			g.setColor(Settings.gold);
 			g.setFont(new Font("Arial", Font.BOLD, 20));
-			g.drawString("Winner: "+board.getWinner(), 150 , 100);			
+			g.drawString("Winner: " + board.getWinner(), 150, 100);
 		}
-		
+
 		/* DRAW BOARD BORDER */
 		g.setStroke(new BasicStroke(Settings.boardStroke));
 		g.setColor(Settings.gold);
-		g.draw(new Rectangle(board.getX(), board.getY(),
-				board.getWidth(), board.getHeight()));
+		g.draw(new Rectangle(board.getX(), board.getY(), board.getWidth(),
+				board.getHeight()));
 		g.setStroke(oldStroke);
 
 		/* DRAW MARKERS */
 		for (PlayerController playerController : board.getPlayers()) {
-			playerController.draw(g);		
+			playerController.draw(g);
+			System.out.println();
 		}
 
 	}

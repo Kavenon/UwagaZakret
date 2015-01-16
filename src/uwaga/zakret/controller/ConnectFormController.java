@@ -25,10 +25,10 @@ public class ConnectFormController extends Controller {
 	private boolean cleared;
 
 	private float alpha = 0.0f;
-	
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(ConnectFormController.class);
-	
+
 	public ConnectFormController(GameEngine engine) {
 		this.engine = engine;
 	}

@@ -25,7 +25,6 @@ public class Position {
 	public void setY(double y) {
 		this.y = y;
 	}
-	
 
 	public boolean equals(Object other) {
 		if (!(other instanceof Position)) {
@@ -36,12 +35,13 @@ public class Position {
 
 		return (int) x == (int) that.x && (int) y == (int) that.y;
 	}
+
 	@Override
 	public int hashCode() {
-	    int hash = 7;
-	    hash = 71 * hash + (int) x;
-	    hash = 71 * hash + (int) y;
-	    return hash;
+		int hash = 7;
+		hash = 71 * hash + (int) x;
+		hash = 71 * hash + (int) y;
+		return hash;
 	}
 
 }
