@@ -1,3 +1,4 @@
+//:uwaga.zakret.model.commands.client.AddplayerAction.java
 package uwaga.zakret.model.commands.client;
 
 import java.awt.Color;
@@ -12,11 +13,23 @@ import uwaga.zakret.model.Position;
 import uwaga.zakret.model.Settings;
 import uwaga.zakret.model.commands.ActionHandler;
 
+/**
+ * Action that handes ADDPLAYER#username command
+ */
 public class AddplayerAction extends ActionHandler {
+	
+	/**
+	 * Instantiates a new addplayer action.
+	 *
+	 * @param msg the msg
+	 */
 	public AddplayerAction(String msg) {
 		handledCommand = msg;
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.model.commands.ActionHandler#action(java.lang.String)
+	 */
 	protected void action(String msg) {		
 
 		String[] split = msg.split("#");
@@ -33,6 +46,7 @@ public class AddplayerAction extends ActionHandler {
 
 		board.incRemainingPlayers();
 
+		// create new marker for player
 		Marker newMarker = new Marker();
 
 		newMarker.setCurrentPosition(new Position(Double.parseDouble(split[2]),
@@ -46,6 +60,7 @@ public class AddplayerAction extends ActionHandler {
 
 		newMarkerController.setMarker(newMarker);
 
+		// create new player
 		Player newPlayer = new Player(split[1]);
 		newPlayer.setMarkerController(newMarkerController);
 		newPlayer.setPoints(Integer.parseInt(split[6]));
@@ -55,7 +70,8 @@ public class AddplayerAction extends ActionHandler {
 		PlayerController newController = new PlayerController();
 
 		newController.setPlayer(newPlayer);
-
+		
+		// add player to board
 		board.setPlayers(newController);
 	}
-}
+}///!~

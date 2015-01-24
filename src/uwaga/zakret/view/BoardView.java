@@ -1,3 +1,4 @@
+//:uwaga.zakret.view.BoardView.java
 package uwaga.zakret.view;
 
 import java.awt.BasicStroke;
@@ -10,14 +11,28 @@ import uwaga.zakret.controller.PlayerController;
 import uwaga.zakret.model.Board;
 import uwaga.zakret.model.Settings;
 
+/**
+ * Viev for board model
+ */
 public class BoardView extends View {
 
+	/** The board. */
 	private Board board;
 
+	/**
+	 * Instantiates a new board view.
+	 *
+	 * @param board the board
+	 */
 	public BoardView(Board board) {
 		this.board = board;
 	}
 
+	/**
+	 * Clear board.
+	 *
+	 * @param g the g
+	 */
 	public void clearBoard(Graphics2D g) {
 		g.clearRect(board.getX() - Settings.boardStroke - 1, board.getY()
 				- Settings.boardStroke - 1, board.getHeight()
@@ -25,6 +40,9 @@ public class BoardView extends View {
 				+ Settings.boardStroke + 1);
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.view.View#draw(java.awt.Graphics2D)
+	 */
 	@Override
 	public void draw(Graphics2D g) {
 
@@ -61,4 +79,4 @@ public class BoardView extends View {
 
 	}
 
-}
+}///!~

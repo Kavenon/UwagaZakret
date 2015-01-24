@@ -1,3 +1,4 @@
+//:uwaga.zakret.controller.PlayController.java
 package uwaga.zakret.controller;
 
 import java.awt.Graphics2D;
@@ -28,34 +29,56 @@ import uwaga.zakret.view.BoardView;
 import uwaga.zakret.view.ImageView;
 import uwaga.zakret.view.StatsView;
 
+/**
+ * Play game state
+ */
 public class PlayController extends Controller {
 
+	/** The board view. */
 	private BoardView boardView;
+	
+	/** The stats view. */
 	private StatsView statsView;
 
+	/** The footer view. */
 	private ImageView logoView, footerView;
 
+	/** The board. */
 	private Board board;
 
+	/** The marker controller. */
 	private MarkerController markerController;
+	
+	/** The player controller. */
 	private PlayerController playerController;
 
+	/** The last writing. */
 	private String lastWriting;
+	
+	/** The random generator */
 	private Random gen = new Random();
 
+	/** The action chain. */
 	private ActionChain actionChain;
 
+	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory
 			.getLogger(PlayController.class);
 
+	/**
+	 * Instantiates a new play controller.
+	 *
+	 * @param engine the engine
+	 */
 	public PlayController(GameEngine engine) {
 		this.engine = engine;
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#init()
+	 */
 	public void init() {
-
-		logger.debug("Initialized");
-
+		
 		board = new Board();
 
 		playerController = new PlayerController(engine);
@@ -66,12 +89,14 @@ public class PlayController extends Controller {
 		logoView = new ImageView("/logo.jpg");
 		footerView = new ImageView("/footer.jpg");
 
+		/** Chain of responsibility **/
 		actionChain = new ActionChain();
 		actionChain.setBoard(board);
 		actionChain.setMarkerController(markerController);
 		actionChain.setPlayerController(playerController);
 		actionChain.setConnection(engine.getConn());
 
+		/** possible commands parsed by client **/
 		actionChain.add(new OtherpositionAction("OTHERSPOSITION"));
 		actionChain.add(new ColAction("COL"));
 		actionChain.add(new WinnerAction("WINNER"));
@@ -86,8 +111,12 @@ public class PlayController extends Controller {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#update()
+	 */
 	public void update() {
 
+		// check if it's time to put down or up marker
 		toggleMarkerWriting();
 
 		try {
@@ -98,6 +127,7 @@ public class PlayController extends Controller {
 			if (line == null)
 				return;
 
+			// parse command received from server
 			actionChain.start(line);
 
 		} catch (EOFException e) {
@@ -114,6 +144,9 @@ public class PlayController extends Controller {
 
 	}
 
+	/**
+	 * Toggle marker writing.
+	 */
 	private void toggleMarkerWriting() {
 		if (!board.isPlaying())
 			return;
@@ -159,16 +192,23 @@ public class PlayController extends Controller {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#setError(java.lang.String)
+	 */
 	public void setError(String msg) {
 		error = msg;
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#draw(java.awt.Graphics2D)
+	 */
 	public void draw(Graphics2D g) {
 
 		boardView.draw(g);
 		statsView.draw(g);
 		logoView.draw(g, 460, 20, 156, 54);
 
+		// draw if admin
 		if (board != null && playerController != null
 				&& playerController.getPlayer() != null
 				&& board.getAdmin() != null) {
@@ -179,18 +219,27 @@ public class PlayController extends Controller {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#keyTyped(char)
+	 */
 	public void keyTyped(char k) {
 		if (playerController != null)
 			playerController.keyTyped(k);
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#keyPressed(int)
+	 */
 	public void keyPressed(int k) {
 		if (playerController != null)
 			playerController.keyPressed(k);
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#keyReleased(int)
+	 */
 	public void keyReleased(int k) {
 		if (playerController != null)
 			playerController.keyReleased(k);
 	}
-}
+}///!~

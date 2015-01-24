@@ -1,3 +1,4 @@
+//:uwaga.zakret.view.StatsView.java
 package uwaga.zakret.view;
 
 import java.awt.Color;
@@ -10,19 +11,33 @@ import uwaga.zakret.controller.PlayerController;
 import uwaga.zakret.model.Player;
 import uwaga.zakret.model.Settings;
 
+/**
+ * View for displaying stats
+ */
 public class StatsView extends View {
 
+	/** The players. */
 	private ArrayList<PlayerController> players;
 
+	/**
+	 * Instantiates a new stats view.
+	 *
+	 * @param players the players
+	 */
 	public StatsView(ArrayList<PlayerController> players) {
 		this.players = players;
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.view.View#draw(java.awt.Graphics2D)
+	 */
 	@Override
 	public void draw(Graphics2D g) {
-
+		
+		// clear stats place
 		g.clearRect(450, 0, 180, 480);
 
+		// set font
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 		g.setFont(new Font("Arial", Font.BOLD, 28));
@@ -58,4 +73,4 @@ public class StatsView extends View {
 
 	}
 
-}
+}///!~

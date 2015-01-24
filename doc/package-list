@@ -1,0 +1,9 @@
+
+uwaga.zakret
+uwaga.zakret.controller
+uwaga.zakret.model
+uwaga.zakret.model.commands
+uwaga.zakret.model.commands.client
+uwaga.zakret.model.commands.server
+uwaga.zakret.server
+uwaga.zakret.view

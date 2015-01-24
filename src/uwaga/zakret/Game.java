@@ -1,9 +1,18 @@
+//:uwaga.zakret.Game.java
 package uwaga.zakret;
 
 import javax.swing.JFrame;
 
+/**
+ * Client Game.
+ */
 public class Game {
 
+	/**
+	 * The main method. Creates window and Jframe
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 
 		JFrame window = new JFrame("Uwaga Zakret");
@@ -15,4 +24,4 @@ public class Game {
 
 	}
 
-}
+}///!~

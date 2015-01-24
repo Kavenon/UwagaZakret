@@ -1,3 +1,4 @@
+//:uwaga.zakret.controller.ConnectFormController.java
 package uwaga.zakret.controller;
 
 import java.awt.AlphaComposite;
@@ -12,27 +13,45 @@ import uwaga.zakret.GameEngine;
 import uwaga.zakret.GamePanel;
 import uwaga.zakret.view.ImageView;
 
+/**
+ * ConnectFormController game state
+ */
 public class ConnectFormController extends Controller {
 
+	/** The background view. */
 	private ImageView backgroundView;
 
+	/** The ip. */
 	private String ip = "";
 
+	/** The enter pressed. */
 	private boolean enterPressed;
 
+	/** The ready to move. */
 	private boolean readyToMove;
 
+	/** The cleared. */
 	private boolean cleared;
 
+	/** The alpha. */
 	private float alpha = 0.0f;
 
+	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory
 			.getLogger(ConnectFormController.class);
 
+	/**
+	 * Instantiates a new connect form controller.
+	 *
+	 * @param engine the engine
+	 */
 	public ConnectFormController(GameEngine engine) {
 		this.engine = engine;
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#init()
+	 */
 	public void init() {
 
 		enterPressed = false;
@@ -43,10 +62,14 @@ public class ConnectFormController extends Controller {
 
 	};
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#update()
+	 */
 	public void update() {
 
 		alpha += 0.05f;
 
+		// if image faded in
 		if (alpha >= 1.0f)
 			alpha = 1.0f;
 
@@ -61,17 +84,23 @@ public class ConnectFormController extends Controller {
 			enterPressed = false;
 		}
 
+		// if screen cleared
 		if (cleared) {
 			engine.setState(GameEngine.PLAY);
 		}
 
 	};
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#draw(java.awt.Graphics2D)
+	 */
 	public void draw(java.awt.Graphics2D g) {
 
+		// enable alpha channel
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
 				alpha));
 
+		// clear screen
 		g.clearRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 
 		if (!readyToMove) {
@@ -91,6 +120,9 @@ public class ConnectFormController extends Controller {
 		}
 	};
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#keyPressed(int)
+	 */
 	public void keyPressed(int k) {
 		if (k == KeyEvent.VK_BACK_SPACE) {
 			if (ip.length() > 0)
@@ -102,17 +134,26 @@ public class ConnectFormController extends Controller {
 		}
 	};
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#keyReleased(int)
+	 */
 	public void keyReleased(int k) {
 
 	};
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#keyTyped(char)
+	 */
 	public void keyTyped(char k) {
 		if (ip.length() < 15)
 			ip = (ip + k).trim();
 	};
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#setError(java.lang.String)
+	 */
 	public void setError(String msg) {
 		error = msg;
 	}
 
-}
+}///!~

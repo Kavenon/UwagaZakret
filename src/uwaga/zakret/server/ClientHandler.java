@@ -1,3 +1,4 @@
+//:uwaga.zakret.server.ClientHandler.java
 package uwaga.zakret.server;
 
 import java.io.IOException;
@@ -18,37 +19,57 @@ import uwaga.zakret.model.commands.server.RequestOthersResetAction;
 import uwaga.zakret.model.commands.server.ResetAction;
 import uwaga.zakret.model.commands.server.StartAction;
 
+/**
+ * Class that handles request from single client
+ */
 public class ClientHandler extends Thread {
 
+	/** The socket. */
 	private Socket socket;
 
+	/** The current player. */
 	private PlayerController currentPlayer;
 
+	/** The action chain. */
 	private ActionChain actionChain;
 
+	/** The connection with client */
 	private Connection conn;
 
+	/** The board. */
 	private Board board;
 
+	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory
 			.getLogger(ClientHandler.class);
 
+	/**
+	 * Instantiates a new client handler.
+	 * 
+	 * @param socket
+	 *            the socket
+	 * @param board
+	 *            the board
+	 */
 	public ClientHandler(Socket socket, Board board) {
 
 		this.socket = socket;
 		this.board = board;
 
+		// create connection
 		conn = new Connection();
 		conn.setSocket(socket);
 		conn.createDataStreams();
 
 		currentPlayer = new PlayerController();
 
+		// create chain of responsibility
 		actionChain = new ActionChain();
 		actionChain.setBoard(board);
 		actionChain.setPlayerController(currentPlayer);
 		actionChain.setConnection(conn);
 
+		// commands that are understood
 		actionChain.add(new RegisterAction("REGISTER"));
 		actionChain.add(new ResetAction("RESET"));
 		actionChain.add(new RequestOthersResetAction("REQUEST_OTHERS_RESET"));
@@ -59,6 +80,11 @@ public class ClientHandler extends Thread {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Thread#run()
+	 */
 	public void run() {
 
 		try {
@@ -78,6 +104,7 @@ public class ClientHandler extends Thread {
 					return;
 				}
 
+				// look for apropiate link from chain
 				actionChain.start(input);
 
 			}
@@ -97,20 +124,29 @@ public class ClientHandler extends Thread {
 		}
 	}
 
+	/**
+	 * Method that runs after client disconnected/connection lost
+	 */
 	private void disconnectPlayer() {
 		if (conn.getWriter() != null) {
 			ServerInstance.getWriters().remove(conn.getWriter());
 		}
 
-		if (board != null && currentPlayer.getPlayer().getUsername() != null) {
+		if (board != null && currentPlayer != null
+				&& currentPlayer.getPlayer() != null
+				&& currentPlayer.getPlayer().getUsername() != null) {
+
 			logger.info("Player " + currentPlayer.getPlayer().getUsername()
 					+ " disconnected");
 			board.decRemainingPlayers();
 			board.getPlayers().remove(currentPlayer);
 
+			// stop game if only one player left
 			if (ServerInstance.getPlayersConnected() == 1) {
 				board.setPlaying(false);
 			}
+
+			// if player was admin, change admin to null or next player
 			if (currentPlayer.getPlayer().getUsername()
 					.equals(board.getAdmin())) {
 				if (ServerInstance.getPlayersConnected() > 0) {
@@ -122,11 +158,11 @@ public class ClientHandler extends Thread {
 				}
 			}
 
+			// inform others that someone disconnected
 			ServerInstance.broadcastMessage("DISCONNECT#"
 					+ currentPlayer.getPlayer().getUsername() + "#"
 					+ board.getAdmin());
 
 		}
 	}
-
-}
+}// /!~

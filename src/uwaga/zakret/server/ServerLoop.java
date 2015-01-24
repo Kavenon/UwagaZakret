@@ -1,4 +1,8 @@
+//:uwaga.zakret.server.ServerLoop.java
 package uwaga.zakret.server;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uwaga.zakret.controller.PlayerController;
 import uwaga.zakret.model.Board;
@@ -6,19 +10,39 @@ import uwaga.zakret.model.Player;
 import uwaga.zakret.model.Position;
 import uwaga.zakret.model.Settings;
 
+/**
+ * Server loop to provide own game state, coherent for all players
+ */
 public class ServerLoop extends Thread {
 
+	/** The board. */
 	private Board board;
 
+	/** The collision detected. */
 	private String collisionDetected;
 
+	/** The fps. */
 	private static int FPS = 30;
+	
+	/** The target time. */
 	private static long targetTime = 1000 / FPS;
+	
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory
+			.getLogger(ServerLoop.class);
 
+	/**
+	 * Instantiates a new server loop.
+	 *
+	 * @param board the board
+	 */
 	public ServerLoop(Board board) {
 		this.board = board;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
 	public void run() {
 		long start;
 		long elapsed;
@@ -32,7 +56,7 @@ public class ServerLoop extends Thread {
 				update();
 
 			if (collisionDetected != null) {
-				// logger.debug("COLLIDE" + collisionDetected);
+				logger.debug("COLLIDE" + collisionDetected);
 				ServerInstance.broadcastMessage("COL#" + collisionDetected);
 				collisionDetected = null;
 			}
@@ -50,12 +74,15 @@ public class ServerLoop extends Thread {
 			try {
 				Thread.sleep(wait);
 			} catch (Exception e) {
-				// logger.error(e.toString());
+				logger.error(e.toString());
 				e.printStackTrace();
 			}
 		}
 	}
 
+	/**
+	 * Update game state
+	 */
 	private void update() {
 
 		for (PlayerController playerController : board.getPlayers()) {
@@ -70,6 +97,7 @@ public class ServerLoop extends Thread {
 			int mapY = (board.getY() + board.getHeight());
 
 			if (playerController.getPlayer().isAlive()) {
+				// action if collision detected
 				if (isCollision(playerController)) {
 					playerController.getPlayer().setAlive(false);
 
@@ -78,6 +106,7 @@ public class ServerLoop extends Thread {
 					board.decRemainingPlayers();
 				}
 
+				// if nothing bad happend (player out of map, crash) markMap that he visited this area
 				if (plX < mapX && plY < mapY && plX > 0 && plY > 0) {
 					if (playerController.getPlayer().getMarkerController()
 							.getMarker().isWriting()
@@ -86,17 +115,21 @@ public class ServerLoop extends Thread {
 					}
 				}
 			}
+			// update player (move to next field)
 			if (playerController.getPlayer().isAlive()) {
 				playerController.update();
 			}
 		}
 
+		// if only one player left, look for winner
 		if (board.getRemainingPlayers() <= 1 && board.isPlaying()) {
 			PlayerController winner = findWinner();
 			if (winner != null) {
+				// increment winner points
 				int prevPoints = winner.getPlayer().getPoints();
 				winner.getPlayer().setPoints(prevPoints + 1);
 
+				// if game ended (point limit reached), send winner to others and reset points
 				if (checkGameEnd(prevPoints + 1)) {
 					resetPoints();
 					ServerInstance.broadcastMessage("WINNER#"
@@ -104,16 +137,28 @@ public class ServerLoop extends Thread {
 				}
 			}
 
+			// reset map
 			board.createMap();
 			board.setPlaying(false);
 		}
 
 	}
 
+	/**
+	 * Check if game ended
+	 *
+	 * @param points the points
+	 * @return true, if successful
+	 */
 	private boolean checkGameEnd(int points) {
 		return points == Settings.goal;
 	}
 
+	/**
+	 * Find winner (last alive)
+	 *
+	 * @return the player controller
+	 */
 	private PlayerController findWinner() {
 		for (PlayerController playerController : board.getPlayers()) {
 			if (playerController.getPlayer().isAlive()) {
@@ -123,6 +168,12 @@ public class ServerLoop extends Thread {
 		return null;
 	}
 
+	/**
+	 * Checks if is collision.
+	 *
+	 * @param plcont the plcont
+	 * @return true, if is collision
+	 */
 	private boolean isCollision(PlayerController plcont) {
 
 		Position current = plcont.getPlayer().getMarkerController().getMarker()
@@ -142,6 +193,7 @@ public class ServerLoop extends Thread {
 
 		Player[][] map = board.getMap();
 
+		// check if player went out of map
 		if (plX >= board.getX() + board.getWidth() - Settings.boardStroke
 				|| plY >= board.getY() + board.getHeight()
 						- Settings.boardStroke
@@ -150,6 +202,7 @@ public class ServerLoop extends Thread {
 			return true;
 		}
 
+		// check fields and fields nearby.
 		if (previous != null) {
 			if (plX != prevPlX && plY != prevPlY) {
 				if (map != null) {
@@ -174,14 +227,20 @@ public class ServerLoop extends Thread {
 
 	}
 
+	/**
+	 * Reset points.
+	 */
 	private void resetPoints() {
 		for (PlayerController playerController : board.getPlayers()) {
 			playerController.getPlayer().setPoints(0);
 		}
 	}
 
+	/**
+	 * Send current position of all players
+	 */
 	private void send() {
-
+		// prepare data
 		String data = "OTHERSPOSITION#";
 		for (PlayerController playerController : board.getPlayers()) {
 
@@ -189,17 +248,23 @@ public class ServerLoop extends Thread {
 
 			Position current = pl.getMarkerController().getMarker()
 					.getCurrentPosition();
+		
 			data = data + pl.getUsername() + "," + (int) current.getX() + ","
 					+ (int) current.getY() + ","
 					+ pl.getMarkerController().getMarker().isWriting() + "#";
 		}
-
+		// broadcast to all players
 		ServerInstance.broadcastMessage(data);
 
 	}
 
+	/**
+	 * Sets the board.
+	 *
+	 * @param board the new board
+	 */
 	public void setBoard(Board board) {
 		this.board = board;
 	}
 
-}
+}///!~

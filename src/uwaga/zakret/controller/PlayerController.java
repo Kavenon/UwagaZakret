@@ -1,3 +1,4 @@
+//:uwaga.zakret.controller.PlayerController.java
 package uwaga.zakret.controller;
 
 import java.awt.Graphics2D;
@@ -8,40 +9,74 @@ import uwaga.zakret.model.Player;
 import uwaga.zakret.model.Settings;
 import uwaga.zakret.view.PlayerView;
 
+/**
+ * Controls the player
+ */
 public class PlayerController extends Controller {
 
+	/** The player. */
 	private Player player;
 
+	/** The player view. */
 	private PlayerView playerView;
 
+	/** The pressed. */
 	private boolean pressed;
 
+	/**
+	 * Instantiates a new player controller.
+	 *
+	 * @param engine the engine
+	 */
 	public PlayerController(GameEngine engine) {
 		this.engine = engine;
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#setError(java.lang.String)
+	 */
 	public void setError(String msg) {
 		error = msg;
 	}
 
+	/**
+	 * Instantiates a new player controller.
+	 */
 	public PlayerController() {
 
 	}
 
+	/**
+	 * Sets the player.
+	 *
+	 * @param player the new player
+	 */
 	public void setPlayer(Player player) {
 		this.player = player;
 		playerView = new PlayerView(player);
 	}
 
+	/**
+	 * Gets the player.
+	 *
+	 * @return the player
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#init()
+	 */
 	public void init() {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#update()
+	 */
 	public void update() {
+		// update player marker
 		MarkerController markCont = player.getMarkerController();
 
 		if (markCont.isTurning()) {
@@ -51,10 +86,16 @@ public class PlayerController extends Controller {
 		markCont.move();
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#draw(java.awt.Graphics2D)
+	 */
 	public void draw(Graphics2D g) {
 		playerView.draw(g);
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#keyPressed(int)
+	 */
 	public void keyPressed(int k) {
 
 		if (k == player.getControl().getLeft()) {
@@ -75,6 +116,9 @@ public class PlayerController extends Controller {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#keyReleased(int)
+	 */
 	public void keyReleased(int k) {
 
 		if (player == null || player.getControl() == null)
@@ -89,8 +133,11 @@ public class PlayerController extends Controller {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see uwaga.zakret.controller.Controller#keyTyped(char)
+	 */
 	public void keyTyped(char k) {
 
 	}
 
-}
+}///!~
