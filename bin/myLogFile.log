@@ -242,3 +242,12 @@
 2015-01-23 16:00:45,100  INFO   [ClientHandler] Player Player26 disconnected 
 2015-01-23 22:21:12,334  INFO   [ServerInstance] New client connected 
 2015-01-23 22:21:12,340  INFO   [ClientHandler] Connection lost 
+2015-01-24 11:42:18,119  INFO   [ServerInstance] Server running 
+2015-01-24 11:42:18,125  ERROR  [ServerInstance] java.net.BindException: Address already in use: JVM_Bind 
+2015-01-29 11:56:41,801  INFO   [ServerInstance] Server running 
+2015-01-29 11:56:41,858  ERROR  [ServerInstance] java.net.BindException: Address already in use: JVM_Bind 
+2015-01-29 11:56:48,274  INFO   [ServerInstance] Server running 
+2015-01-29 11:56:48,274  INFO   [ServerInstance] Server loop initialized 
+2015-01-29 11:56:54,147  INFO   [ServerInstance] New client connected 
+2015-01-29 11:56:54,210  DEBUG  [ClientHandler] CLIENT:REGISTER#Player0 
+2015-01-29 11:56:54,304  DEBUG  [ClientHandler] CLIENT:READY[Player0] 

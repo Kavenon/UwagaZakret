@@ -120,8 +120,9 @@ public class PlayController extends Controller {
 		toggleMarkerWriting();
 
 		try {
-
+			System.out.println("before");
 			String line = engine.getConn().read();
+			System.out.println("after");
 			logger.debug("SERV: " + line);
 
 			if (line == null)

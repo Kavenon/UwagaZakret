@@ -5,9 +5,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
@@ -96,6 +99,27 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		long elapsed;
 		long wait;
 
+		 int delay = (int) targetTime; //milliseconds
+		
+		 
+		  TimerTask task = new TimerTask() {
+		      public void run()	 {
+		    		update();
+					draw();
+					drawToScreen();
+					
+		      }
+		  };
+		  
+		  Timer timer = new Timer();
+		  timer.schedule(task, delay,delay);
+		
+		//  timer.start();
+	
+		//Timer timer = new Timer(1000, new LoopTimer(this));
+
+		//timer.start();
+		/*
 		while (running) {
 			start = System.nanoTime();
 
@@ -116,7 +140,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				e.printStackTrace();
 			}
 		}
-
+*/
 	}
 
 	/**
@@ -162,7 +186,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
 	public void keyPressed(KeyEvent key) {
-
+System.out.println(key.getKeyCode());
 		engine.keyPressed(key.getKeyCode());
 
 	}

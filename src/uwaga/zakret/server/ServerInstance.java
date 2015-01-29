@@ -107,7 +107,7 @@ public class ServerInstance {
 	 */
 	public static void sendToClient(DataOutputStream out, String message) {
 		try {
-			out.writeUTF(message);
+			out.writeUTF(message);			
 			out.flush();
 		} catch (IOException e) {
 			logger.error(e.toString());

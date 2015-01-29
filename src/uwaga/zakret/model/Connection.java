@@ -100,6 +100,7 @@ public class Connection {
 	 * @param string the string
 	 */
 	public void send(String string) {
+		if(out == null) return;
 		try {
 			out.writeUTF(string);
 			out.flush();
@@ -116,7 +117,9 @@ public class Connection {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public String read() throws EOFException, IOException {
-
+		
+		if(in == null) return null;
+		
 		String line = null;
 		line = in.readUTF();
 

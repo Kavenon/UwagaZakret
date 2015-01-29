@@ -73,8 +73,7 @@ public class BoardView extends View {
 
 		/* DRAW MARKERS */
 		for (PlayerController playerController : board.getPlayers()) {
-			playerController.draw(g);
-			System.out.println();
+			playerController.draw(g);		
 		}
 
 	}

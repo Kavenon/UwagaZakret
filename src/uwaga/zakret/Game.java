@@ -16,7 +16,9 @@ public class Game {
 	public static void main(String[] args) {
 
 		JFrame window = new JFrame("Uwaga Zakret");
-		window.setContentPane(new GamePanel());
+		GamePanel gp = new GamePanel();
+		window.setContentPane(gp);
+		 gp.requestFocusInWindow();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.pack();

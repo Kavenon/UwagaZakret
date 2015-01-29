@@ -4,7 +4,7 @@ package uwaga.zakret.model.commands.client;
 import uwaga.zakret.model.commands.ActionHandler;
 
 /**
- * Action that handles INITBOARD#x#y#width#height command
+ * Action that handles INITBOARD#x#y#width#height#user command
  */
 public class InitboardAction extends ActionHandler {
 	

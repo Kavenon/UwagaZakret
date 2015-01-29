@@ -1,6 +1,11 @@
 //:uwaga.zakret.server.ServerLoop.java
 package uwaga.zakret.server;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +53,7 @@ public class ServerLoop extends Thread {
 		long elapsed;
 		long wait;
 
+		
 		while (true) {
 
 			start = System.nanoTime();
@@ -78,6 +84,27 @@ public class ServerLoop extends Thread {
 				e.printStackTrace();
 			}
 		}
+
+	/*	  ActionListener taskPerformer = new ActionListener() {
+		      public void actionPerformed(ActionEvent evt) {
+
+					if (board.isPlaying())
+						update();
+
+					if (collisionDetected != null) {
+						logger.debug("COLLIDE" + collisionDetected);
+						ServerInstance.broadcastMessage("COL#" + collisionDetected);
+						collisionDetected = null;
+					}
+
+					if (board.isPlaying())
+						send();
+					
+		      }
+		  };
+		  Timer timer = new Timer((int) targetTime, taskPerformer);
+		
+		  timer.start();*/
 	}
 
 	/**
